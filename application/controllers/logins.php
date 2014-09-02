@@ -1,15 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Logins extends CI_Controller {
-    
-	public function login()
-	{
 
-        $data = $this->input->post();
-        
+    public function login()
+    {
         $user = new User();
-        $user->email = $data['email'];
-        $user->password = $data['password'];
+        $user->email = $this->input->post('email');
+        $user->password = $this->input->post('password');
 
         if ($user->login())
         {
@@ -19,8 +16,7 @@ class Logins extends CI_Controller {
         {
             redirect('/users/new_user');
         }
-
-	}
+    }
     public function logout()
     {
 
