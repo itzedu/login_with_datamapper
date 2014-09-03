@@ -3,6 +3,12 @@
     <title>All Users</title>
 </head>
 <body>
+<?php
+    if ($this->session->flashdata('success'))
+        {
+          echo $this->session->flashdata('success');
+        }
+?>
     <table>
         <thead>
             <tr>

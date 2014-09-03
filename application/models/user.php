@@ -2,7 +2,6 @@
 class User extends DataMapper
 {
     var $has_many = array('record');
-    var $salt = '8138de0b3b3082fb360796f19f81ca94';
     var $validation = array(
         'first_name' => array(
             'label' => 'First Name',
@@ -22,7 +21,7 @@ class User extends DataMapper
             ),
         'email' => array(
             'label' => 'Email',
-            'rules' => array('required','trim', 'valid_email')
+            'rules' => array('required','trim', 'unique','valid_email')
             )
         );
 
@@ -46,7 +45,6 @@ class User extends DataMapper
         $this->validate()->get();
         if (empty($this->id))
         {
-            $this->error_message('login', 'Username or password invalid');
             return FALSE;
         }
         else

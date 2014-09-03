@@ -9,9 +9,24 @@ class Users extends CI_Controller {
 
     public function all_users()
     {
-        $user_model = new User(16);
-        $users = $user_model->get()->all_to_array();
+        $this->output->enable_profiler(TRUE);
+
+        $user_id = $this->session->userdata('id');
+        $user = new User();
+
+        $record_model = new Record();
+        
+        $dump = $user->include_related('record', array('check_in'),TRUE,TRUE)->get()->all_to_array();
+
+        // var_dump($dump);
+        // die();
+
+
+        $this_user_record = $record_model->where_related('user', $user->first_name, $user)->get()->all_to_array();
+        // var_dump($this_user_record);
+        // die();
         $this->load->view('all_users', array('users' => $users));
+
     }
 
     public function new_user()
@@ -28,8 +43,12 @@ class Users extends CI_Controller {
         $user->password = $this->input->post('password');
         $user->confirm_password = $this->input->post('confirm_password');
 
+
         if ($user->save())
         {
+
+            $id = $user->id;
+            $this->session->set_userdata('id', $id);
             $this->session->set_flashdata('success', "User successfully created");
             redirect('/users/all_users');
         }

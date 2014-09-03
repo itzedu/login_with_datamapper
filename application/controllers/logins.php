@@ -9,11 +9,18 @@ class Logins extends CI_Controller {
         $user->password = $this->input->post('password');
 
         if ($user->login())
-        {
+        {   
+            $user_id = $this->session->userdata('id');
+
+            $record = new Record();
+            $record->check_in = date('Y-m-d H:i:s');
+            $record->user_id = $user_id;
+            $record->save();
             redirect('/users/all_users');
         }
         else
-        {
+        {   
+            $this->session->set_flashdata('error', array("Invalid Email or Password"));
             redirect('/users/new_user');
         }
     }
