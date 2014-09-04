@@ -9,17 +9,17 @@ class Users extends CI_Controller {
 
     public function all_users()
     {
-        $this->output->enable_profiler(TRUE);
-
         $user_id = $this->session->userdata('id');
         $user = new User();
 
         $record_model = new Record();
         
-        $dump = $user->include_related('record', array('check_in'),TRUE,TRUE)->get()->all_to_array();
+        $dump = $user->include_related('record', array('check_in'), TRUE, TRUE)->get();
+        var_dump($dump->all_to_array());
+        die();
 
-        // var_dump($dump);
-        // die();
+ 
+
 
 
         $this_user_record = $record_model->where_related('user', $user->first_name, $user)->get()->all_to_array();
